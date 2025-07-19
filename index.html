@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plan de Estudios Interactivo</title>
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#1e1e1e">
+
+    <style>
+        /* --- Estilos Generales y Tema Oscuro (Inspirado en tu juego) --- */
+        :root {
+            --color-fondo: #121212;
+            --color-superficie: #1e1e1e;
+            --color-borde: #333;
+            --texto-principal: #e0e0e0;
+            --texto-secundario: #a0a0a0;
+            --color-acento: #03dac6;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--color-fondo);
+            color: var(--texto-principal);
+            padding: 20px;
+        }
+
+        h1, h2 {
+            color: var(--texto-principal);
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        /* Estilos para la sección de Notificaciones */
+        .panel-notificaciones {
+            background-color: var(--color-superficie);
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            border: 1px solid var(--color-borde);
+            text-align: center;
+        }
+
+        .panel-notificaciones label {
+            margin-right: 10px;
+            font-size: 1.1em;
+        }
+
+        .panel-notificaciones input[type="time"] {
+            background-color: var(--color-fondo);
+            color: var(--texto-principal);
+            border: 1px solid var(--color-borde);
+            padding: 8px;
+            border-radius: 5px;
+        }
+
+        .panel-notificaciones button {
+            background-color: var(--color-acento);
+            color: var(--color-fondo);
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-left: 10px;
+            transition: background-color 0.3s;
+        }
+
+        .panel-notificaciones button:hover {
+            background-color: #018786;
+        }
+        
+        #mensaje-notificacion {
+            margin-top: 15px;
+            color: var(--texto-secundario);
+            min-height: 20px;
+        }
+
+        /* Estilos para la lista de semestres */
+        details {
+            background-color: var(--color-superficie);
+            border: 1px solid var(--color-borde);
+            border-radius: 8px;
+            margin-bottom: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            overflow: hidden; /* Para que el borde redondeado se aplique bien */
+        }
+
+        summary {
+            font-weight: bold;
+            font-size: 1.2em;
+            padding: 15px;
+            cursor: pointer;
+            outline: none;
+        }
+
+        details[open] > summary {
+            border-bottom: 1px solid var(--color-borde);
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 10px 20px 15px 20px;
+        }
+
+        li {
+            padding: 12px 0;
+            border-bottom: 1px solid var(--color-borde);
+        }
+        li:last-child {
+            border-bottom: none;
+        }
+        
+        li a {
+            color: var(--texto-principal);
+            text-decoration: none;
+            transition: color 0.3s;
+            display: block; /* Para que el enlace ocupe todo el espacio del li */
+        }
+        
+        li a:hover {
+            color: var(--color-acento);
+        }
+
+    </style>
+</head>
+<body>
+
+    <h1>Plan de Estudios Interactivo</h1>
+
+    <div class="panel-notificaciones">
+        <h2>Recordatorio de Estudio</h2>
+        <label for="hora-notificacion">Recordarme estudiar a las:</label>
+        <input type="time" id="hora-notificacion">
+        <button id="btn-notificacion">Programar</button>
+        <p id="mensaje-notificacion"></p>
+    </div>
+
+    <details>
+        <summary>Semestre 1</summary>
+        <ul>
+            <li><a href="#" target="_blank">Historia de la psicología</a></li>
+            <li><a href="#" target="_blank">Fundamentos de la psicología</a></li>
+            <li><a href="#" target="_blank">Neurobiología de la mente</a></li>
+            <li><a href="#" target="_blank">Epistemología</a></li>
+            <li><a href="#" target="_blank">Articulación de saberes 1</a></li>
+        </ul>
+    </details>
+
+    <details>
+        <summary>Semestre 2</summary>
+        <ul>
+            <li><a href="#">Materias por definir...</a></li>
+        </ul>
+    </details>
+    
+    <details><summary>Semestre 3</summary><ul><li><a href="#">Materias por definir...</a></li></ul></details>
+    <details><summary>Semestre 4</summary><ul><li><a href="#">Materias por definir...</a></li></ul></details>
+    <details><summary>Semestre 5</summary><ul><li><a href="#">Materias por definir...</a></li></ul></details>
+    <details><summary>Semestre 6</summary><ul><li><a href="#">Materias por definir...</a></li></ul></details>
+    <details><summary>Semestre 7</summary><ul><li><a href="#">Materias por definir...</a></li></ul></details>
+    <details><summary>Semestre 8</summary><ul><li><a href="#">Materias por definir...</a></li></ul></details>
+
+<script>
+    // --- Lógica para Notificaciones y Service Worker (PWA) ---
+
+    // 1. REGISTRO DEL SERVICE WORKER
+    // Esto es clave para que la app se pueda instalar y funcione offline.
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('./service-worker.js')
+                .then(registration => console.log('Service Worker registrado con éxito:', registration))
+                .catch(error => console.log('Error al registrar el Service Worker:', error));
+        });
+    }
+
+    // 2. LÓGICA DE NOTIFICACIONES
+    const btnNotificacion = document.getElementById('btn-notificacion');
+    const inputHora = document.getElementById('hora-notificacion');
+    const mensajeNotificacion = document.getElementById('mensaje-notificacion');
+
+    btnNotificacion.addEventListener('click', () => {
+        const horaSeleccionada = inputHora.value;
+        if (!horaSeleccionada) {
+            mensajeNotificacion.textContent = 'Por favor, selecciona una hora.';
+            return;
+        }
+
+        // Primero, pedir permiso para mostrar notificaciones
+        Notification.requestPermission().then(permiso => {
+            if (permiso === 'granted') {
+                programarNotificacion(horaSeleccionada);
+            } else {
+                mensajeNotificacion.textContent = 'Permiso para notificaciones denegado.';
+            }
+        });
+    });
+
+    function programarNotificacion(hora) {
+        const ahora = new Date();
+        const [horas, minutos] = hora.split(':');
+
+        const fechaNotificacion = new Date();
+        fechaNotificacion.setHours(horas);
+        fechaNotificacion.setMinutes(minutos);
+        fechaNotificacion.setSeconds(0);
+
+        // Si la hora ya pasó hoy, programarla para mañana
+        if (fechaNotificacion < ahora) {
+            fechaNotificacion.setDate(fechaNotificacion.getDate() + 1);
+        }
+
+        const tiempoHastaNotificacion = fechaNotificacion.getTime() - ahora.getTime();
+        
+        setTimeout(() => {
+            const notificacion = new Notification('🧠 ¡Hora de Estudiar!', {
+                body: `¡Es un buen momento para repasar tus materias! No olvides Neurobiología.`,
+                icon: 'icon-192.png' // Asegúrate de tener este ícono
+            });
+        }, tiempoHastaNotificacion);
+        
+        mensajeNotificacion.textContent = `¡Recordatorio programado para las ${hora}!`;
+        console.log(`Notificación programada para: ${fechaNotificacion}`);
+    }
+</script>
+
+</body>
+</html>
